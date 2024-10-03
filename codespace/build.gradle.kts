@@ -67,7 +67,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.github.coderspacedev"
             artifactId = "codespace"
-            version = "1.0.8"
+            version = "1.0.9"
 
             pom {
                 description.set("Codespace - A sample Android application")
