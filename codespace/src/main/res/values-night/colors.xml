@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="colorPrimary">#353941</color>
+    <color name="colorPrimaryDark">#353941</color>
+
+    <color name="colorAccent">#2979FF</color>
+    <color name="colorAccent80">#CC2979FF</color>
+    <color name="colorAccent64">#A32979FF</color>
+    <color name="colorAccent50">#802979FF</color>
+    <color name="colorAccent34">#572979FF</color>
+    <color name="colorAccent12">#1F2979FF</color>
+    <color name="colorAccent8">#142979FF</color>
+    <color name="colorAccentTool">#FFFFFF</color>
+
+    <!-- Text Colors -->
+    <color name="colorText">#FFFFFF</color>
+    <color name="colorTextOpacity">#CECECE</color>
+    <color name="colorTextOpacity24">#3DFFFFFF</color>
+    <color name="colorIcon">#FFFFFF</color>
+    <color name="colorIconOpacity">#CECECE</color>
+
+    <!-- Background Colors -->
+    <color name="colorBackground">#26282B</color>
+    <color name="colorSecondaryBackground">#323638</color>
+    <color name="colorCardBackground">#33363A</color>
+    <color name="colorCardBackground34">#5733363A</color>
+    <color name="colorCardBackground50">#8033363A</color>
+</resources>
