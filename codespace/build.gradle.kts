@@ -61,3 +61,20 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.gson)
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.coderspacedev"
+            artifactId = "codespace"
+            version = "1.0.8"
+
+            pom {
+                description.set("Codespace - A sample Android application")
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
