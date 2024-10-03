@@ -1,5 +1,25 @@
 # CodeSpace
 
+## Gradle Setup
+
+To include the necessary dependencies, add the following to your `settings.gradle` & `build.gradle` file:
+
+```groovy
+// settings.gradle
+
+repositories {
+    maven(url = "https://www.jitpack.io")
+}
+```
+
+```groovy
+// build.gradle
+
+dependencies {
+    implementation 'com.github.coderspacedev:codespace:1.0.0'
+}
+```
+
 ### 🚀 About Me
 
 I'm a Android Developer and Flutter beginner <br />
