@@ -1,4 +1,4 @@
-# CodeSpace
+# CodeSpace - Sample Codes
 
 ## Gradle Setup
 
