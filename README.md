@@ -16,7 +16,7 @@ repositories {
 // build.gradle
 
 dependencies {
-    implementation 'com.github.coderspacedev:codespace:1.0.0'
+    implementation 'com.github.coderspacedev:codespace:<latest-version>'
 }
 ```
 
