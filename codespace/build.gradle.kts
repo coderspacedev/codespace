@@ -3,9 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
-    id("maven-publish")
+    alias(libs.plugins.mavenPublish)
 }
-
+group = "com.github.coderspacedev"
 android {
     namespace = "coder.apps.space.library"
     compileSdk = 34
@@ -26,11 +26,17 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -45,7 +51,9 @@ android {
         jvmToolchain(17)
     }
 }
-
+mavenPublishing {
+    coordinates(version = "1.0.11", artifactId = "codespace", groupId = "com.github.coderspacedev")
+}
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
