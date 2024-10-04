@@ -32,7 +32,7 @@ android {
             )
         }
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -52,7 +52,7 @@ android {
     }
 }
 mavenPublishing {
-    coordinates(version = "1.0.13", artifactId = "codespace", groupId = "com.github.coderspacedev")
+    coordinates(version = "1.0.14", artifactId = "codespace", groupId = "com.github.coderspacedev")
 }
 dependencies {
     implementation(libs.androidx.core.ktx)
