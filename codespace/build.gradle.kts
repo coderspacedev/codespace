@@ -52,7 +52,7 @@ android {
     }
 }
 mavenPublishing {
-    coordinates(version = "1.0.14", artifactId = "codespace", groupId = "com.github.coderspacedev")
+    coordinates(version = "1.0.15", artifactId = "codespace", groupId = "com.github.coderspacedev")
 }
 dependencies {
     implementation(libs.androidx.core.ktx)
