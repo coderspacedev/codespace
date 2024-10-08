@@ -1,5 +1,7 @@
 package coder.apps.space.library.base
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.*
 import android.util.*
 import android.view.*
@@ -11,6 +13,7 @@ import androidx.viewbinding.*
 import coder.apps.space.library.helper.*
 import coder.apps.space.library.R
 import coder.apps.space.library.extension.*
+import java.util.Locale
 
 abstract class BaseActivity<B : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B,
@@ -50,6 +53,14 @@ abstract class BaseActivity<B : ViewBinding>(
         windowManager.defaultDisplay.getRealMetrics(displayMetrics)
         screenWidth = displayMetrics.widthPixels
         screenHeight = displayMetrics.heightPixels
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val language = newBase.currentLanguage ?: "en"
+        val localeToSwitchTo = Locale(language)
+        val localeUpdatedContext: ContextWrapper =
+            ContextUtils.updateLocale(newBase, localeToSwitchTo)
+        super.attachBaseContext(localeUpdatedContext)
     }
 
     abstract fun B.initExtra()
