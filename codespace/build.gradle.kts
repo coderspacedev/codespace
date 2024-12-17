@@ -8,7 +8,7 @@ plugins {
 group = "com.github.coderspacedev"
 android {
     namespace = "coder.apps.space.library"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
