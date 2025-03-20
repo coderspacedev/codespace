@@ -3,27 +3,30 @@ package coder.apps.space.library.helper
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import androidx.core.content.edit
 
 class TinyDB(context: Context) {
-    private val preferences: SharedPreferences = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences =
+        context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+
     fun getInt(key: String?, value: Int): Int {
         return preferences.getInt(key, value)
     }
 
-    fun getLong(key: String?): Long {
-        return preferences.getLong(key, 0)
+    fun getLong(key: String?, value: Long): Long {
+        return preferences.getLong(key, value)
     }
 
-    fun getFloat(key: String?): Float {
-        return preferences.getFloat(key, 0f)
+    fun getFloat(key: String?, value: Float): Float {
+        return preferences.getFloat(key, value)
     }
 
-    fun getDouble(key: String?): Double {
+    fun getDouble(key: String?, value: Double): Double {
         val number = getString(key, "")
         return try {
-            number!!.toDouble()
+            number?.toDouble() ?: value
         } catch (e: NumberFormatException) {
-            0.0
+            value
         }
     }
 
@@ -43,17 +46,17 @@ class TinyDB(context: Context) {
 
     fun putInt(key: String?, value: Int) {
         checkForNullKey(key)
-        preferences.edit().putInt(key, value).apply()
+        preferences.edit { putInt(key, value) }
     }
 
     fun putLong(key: String?, value: Long) {
         checkForNullKey(key)
-        preferences.edit().putLong(key, value).apply()
+        preferences.edit { putLong(key, value) }
     }
 
     fun putFloat(key: String?, value: Float) {
         checkForNullKey(key)
-        preferences.edit().putFloat(key, value).apply()
+        preferences.edit { putFloat(key, value) }
     }
 
     fun putDouble(key: String?, value: Double) {
@@ -64,12 +67,12 @@ class TinyDB(context: Context) {
     fun putString(key: String?, value: String?) {
         checkForNullKey(key)
         checkForNullValue(value)
-        preferences.edit().putString(key, value).apply()
+        preferences.edit { putString(key, value) }
     }
 
     fun putBoolean(key: String?, value: Boolean) {
         checkForNullKey(key)
-        preferences.edit().putBoolean(key, value).apply()
+        preferences.edit { putBoolean(key, value) }
     }
 
     fun putObject(key: String?, obj: Any?) {
@@ -79,11 +82,11 @@ class TinyDB(context: Context) {
     }
 
     fun remove(key: String?) {
-        preferences.edit().remove(key).apply()
+        preferences.edit { remove(key) }
     }
 
     fun clear() {
-        preferences.edit().clear().apply()
+        preferences.edit { clear() }
     }
 
     private fun checkForNullKey(key: String?) {

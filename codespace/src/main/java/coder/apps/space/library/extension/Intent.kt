@@ -15,6 +15,7 @@ fun Activity.go(destination: Class<*>, extras: List<Pair<String, Any?>>? = null,
                 is String -> putExtra(key, value)
                 is Boolean -> putExtra(key, value)
                 is Parcelable -> putExtra(key, value)
+                is ArrayList<*> -> putExtra(key, value)
             }
         }
         startActivity(this)
@@ -33,6 +34,7 @@ fun Activity.goResult(destination: Class<*>, extras: List<Pair<String, Any?>>? =
                 is Long -> putExtra(key, value)
                 is Boolean -> putExtra(key, value)
                 is Parcelable -> putExtra(key, value)
+                is ArrayList<*> -> putExtra(key, value)
             }
         }
     }

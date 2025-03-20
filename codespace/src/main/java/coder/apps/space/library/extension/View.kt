@@ -1,11 +1,8 @@
 package coder.apps.space.library.extension
 
-import android.text.*
-import android.text.style.*
-import android.view.*
-import android.widget.*
-import androidx.core.content.res.*
-import coder.apps.space.library.*
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
 
 fun View.beInvisibleIf(beInvisible: Boolean) = if (beInvisible) beInvisible() else beVisible()
 
@@ -55,32 +52,4 @@ fun View.updateViewMargins(leftMargin: Int = 0, topMargin: Int = 0, rightMargin:
     val params = layoutParams as LinearLayout.LayoutParams
     params.setMargins(leftMargin, topMargin, rightMargin, bottomMargin)
     layoutParams = params
-}
-
-fun View.zoomIn() {
-    animate().alpha(0f).setDuration(500).withEndAction {
-        visibility = View.GONE
-        alpha = 1f
-    }.start()
-}
-
-fun View.zoomOut() {
-    visibility = View.VISIBLE
-    alpha = 0f
-    animate().alpha(1f).setDuration(500).start()
-}
-
-fun TextView.highlightText(text: String, color: Int) {
-    val fullText = this.text.toString()
-    val spannableBuilder = SpannableStringBuilder(fullText)
-    var startIndex = fullText.indexOf(text)
-    val typeface = ResourcesCompat.getFont(context, R.font.bold)
-    while (startIndex != -1) {
-        val endIndex = startIndex + text.length
-        val span = ForegroundColorSpan(color)
-        spannableBuilder.setSpan(span, startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        startIndex = fullText.indexOf(text, endIndex)
-    }
-
-    this.text = spannableBuilder
 }

@@ -18,6 +18,8 @@
         <item name="checkboxStyle">@style/Theme.Space.CheckBox</item>
         <item name="android:textSize">@dimen/_14ssp</item>
         <item name="android:windowOptOutEdgeToEdgeEnforcement" tools:ignore="NewApi">true</item>
+        <item name="android:actionOverflowButtonStyle">@style/Theme.Space.ActionButtonOverflow
+        </item>
     </style>
 
     <style name="Theme.Space.Prompt" parent="@style/Theme.Material3.Light.Dialog">
@@ -310,5 +312,10 @@
 
     <style name="Theme.Space.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:button">@drawable/ic_button_selector</item>
+    </style>
+
+
+    <style name="Theme.Space.ActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_menu_options</item>
     </style>
 </resources>
