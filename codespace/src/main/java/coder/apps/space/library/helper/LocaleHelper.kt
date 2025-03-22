@@ -1,12 +1,15 @@
 package coder.apps.space.library.helper
 
-import android.content.*
-import android.content.res.*
-import android.os.*
-import java.util.*
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.os.Build
+import android.os.LocaleList
+import java.util.Locale
 
 var Context.currentLanguage: String?
-    get() = TinyDB(this).getString(languagePrefKey, "en") ?: "en"
+    get() = TinyDB(this).getString(languagePrefKey, null) ?: Locale.getDefault().language
     set(value) = TinyDB(this).putString(languagePrefKey, value)
 
 var Context.languagePrefKey: String?
