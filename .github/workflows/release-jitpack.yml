@@ -12,32 +12,23 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures we have access to tags
 
-      - name: Set up Git
+      - name: Read versionName from Gradle
+        id: version
+        run: |
+          VERSION=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle.kts)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Get latest tag version
-        id: get_version
-        run: |
-          latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "0.0.0")
-          echo "Latest tag: $latest_tag"
-          IFS='.' read -r major minor patch <<< "$latest_tag"
-          new_version="$major.$minor.$((patch + 1))"
-          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
-
-      - name: Read versionName from Gradle (if available)
-        id: version
-        run: |
-          VERSION_NAME=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle.kts || echo "")
-          if [[ -z "$VERSION_NAME" ]]; then
-            VERSION_NAME=$NEW_VERSION
-          fi
-          echo "Final version: $VERSION_NAME"
-          echo "VERSION=$VERSION_NAME" >> $GITHUB_ENV
-
-      - name: Create and push new tag
+      - name: Create and Push Tag
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git tag $VERSION
-          git push origin $VERSION
+          git push https://x-access-token:$GH_TOKEN@github.com/${{ github.repository }}.git $VERSION
