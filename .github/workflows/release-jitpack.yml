@@ -1,37 +1,29 @@
-name: Release and JitPack Trigger
-
+name: Release Workflow
 on:
   push:
     branches:
-      - master  # Change this if your main branch is different
-
+      - master
 jobs:
   release:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Read versionName from Gradle
-        id: version
         run: |
-          VERSION=$(grep -oP 'versionName\s+"?\K[^"]+' app/build.gradle.kts)
+          VERSION=$(./gradlew -q printVersion)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Detected version: $VERSION"
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create and push tag
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git tag $VERSION
-          git push https://$GH_PAT@github.com/${{ github.repository }}.git $VERSION
+          if git rev-parse $VERSION >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists"
+          else
+            git tag $VERSION
+            git push origin $VERSION
+          fi
 
       - name: Trigger JitPack Build
         run: |
-          curl -X GET "https://jitpack.io/com/github/${{ github.repository_owner }}/${{ github.event.repository.name }}/${{ env.VERSION }}/build.log"
+          curl -X GET "https://jitpack.io/com/github/${{ github.repository }}/${{ env.VERSION }}/build.log"
