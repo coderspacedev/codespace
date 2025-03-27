@@ -10,6 +10,7 @@ appcompat = "1.7.0"
 material = "1.12.0"
 
 sdp = "1.1.0"
+shimmer = "0.5.0"
 ssp = "1.1.0"
 multidex = "2.0.1"
 browser = "1.8.0"
@@ -28,6 +29,7 @@ multidex = { group = "androidx.multidex", name = "multidex", version.ref = "mult
 preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 sdp-android = { group = "com.intuit.sdp", name = "sdp-android", version.ref = "sdp" }
+shimmer = { module = "com.facebook.shimmer:shimmer", version.ref = "shimmer" }
 ssp-android = { group = "com.intuit.ssp", name = "ssp-android", version.ref = "ssp" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 

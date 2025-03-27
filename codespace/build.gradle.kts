@@ -68,4 +68,5 @@ dependencies {
     implementation(libs.preference)
     implementation(libs.browser)
     implementation(libs.gson)
+    implementation(libs.shimmer)
 }

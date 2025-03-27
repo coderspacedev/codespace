@@ -2,6 +2,6 @@
 <resources>
     <dimen name="_0sdp">0dp</dimen>
     <dimen name="native_248dp">248dp</dimen>
-    <dimen name="native_118dp">118dp</dimen>
+    <dimen name="native_128dp">128dp</dimen>
     <dimen name="native_65dp">65dp</dimen>
 </resources>

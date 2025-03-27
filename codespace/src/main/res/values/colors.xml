@@ -38,4 +38,5 @@
     <color name="colorBlack24">#3D000000</color>
 
     <color name="colorTransparent">#00000000</color>
+    <color name="colorGreen">#4CAF50</color>
 </resources>
