@@ -29,8 +29,24 @@ jobs:
       - name: Get Android Version
         id: android_version
         run: |
-          VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          if [ -f "app/build.gradle.kts" ]; then
+            VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts || echo "")
+            if [ ! -z "$VERSION" ]; then
+              echo "Using version from build.gradle.kts: $VERSION"
+              echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+              echo "VERSION_SOURCE=gradle" >> $GITHUB_OUTPUT
+            else
+              FALLBACK_VERSION=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
+              echo "No version found in build.gradle.kts, using fallback: $FALLBACK_VERSION"
+              echo "VERSION=$FALLBACK_VERSION" >> $GITHUB_OUTPUT
+              echo "VERSION_SOURCE=fallback" >> $GITHUB_OUTPUT
+            fi
+          else
+            FALLBACK_VERSION=$(date +'%Y%m%d')-$(git rev-parse --short HEAD)
+            echo "build.gradle.kts not found, using fallback: $FALLBACK_VERSION"
+            echo "VERSION=$FALLBACK_VERSION" >> $GITHUB_OUTPUT
+            echo "VERSION_SOURCE=fallback" >> $GITHUB_OUTPUT
+          fi
 
       - name: Create Release Tag
         id: create_tag
@@ -52,9 +68,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
+      - name: Wait for tag to propagate
+        run: sleep 30
+
       - name: Trigger JitPack Build
         run: |
-          # Trigger JitPack build by making a request to the lookup URL
-          curl -L "https://jitpack.io/com/github/${{ github.repository }}/${{ steps.create_tag.outputs.version }}/build.log"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          REPO_OWNER=$(echo "${{ github.repository }}" | cut -d'/' -f1)
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          VERSION="${{ steps.create_tag.outputs.version }}"
+          VERSION_WITHOUT_V="${VERSION#v}"
+          
+          # First request to trigger the build
+          curl -X GET "https://jitpack.io/com/github/$REPO_OWNER/$REPO_NAME/$VERSION_WITHOUT_V/build.log" || true
+          
+          # Wait for JitPack to start processing
+          sleep 60
+          
+          # Second request to check build status
+          HTTP_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "https://jitpack.io/com/github/$REPO_OWNER/$REPO_NAME/$VERSION_WITHOUT_V/$REPO_NAME-$VERSION_WITHOUT_V.pom")
+          
+          if [ "$HTTP_RESPONSE" = "200" ]; then
+            echo "JitPack build completed successfully"
+          else
+            echo "JitPack build status: $HTTP_RESPONSE"
+            echo "Check build status at: https://jitpack.io/#$REPO_OWNER/$REPO_NAME/$VERSION"
+          fi
