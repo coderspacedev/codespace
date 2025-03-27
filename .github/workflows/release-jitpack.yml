@@ -16,7 +16,7 @@ jobs:
       - name: Read versionName from Gradle
         id: version
         run: |
-          VERSION=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle.kts)
+          VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Create new tag
