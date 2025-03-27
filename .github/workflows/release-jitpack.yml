@@ -1,29 +1,55 @@
-name: Release Workflow
+name: JitPack Release
 on:
   push:
     branches:
+      - main
       - master
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
 
-      - name: Read versionName from Gradle
-        run: |
-          VERSION=$(./gradlew -q printVersion)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
 
-      - name: Create and push tag
+      - name: Configure Git
         run: |
-          if git rev-parse $VERSION >/dev/null 2>&1; then
-            echo "Tag $VERSION already exists"
-          else
-            git tag $VERSION
-            git push origin $VERSION
-          fi
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Create Release Tag
+        id: create_tag
+        run: |
+          # Generate version based on timestamp and commit hash
+          VERSION="v$(date +'%Y%m%d')-$(git rev-parse --short HEAD)"
+          echo "Creating new tag: $VERSION"
+          git tag $VERSION
+          git push origin $VERSION
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.create_tag.outputs.version }}
+          generate_release_notes: true
+          token: ${{ secrets.GH_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Trigger JitPack Build
         run: |
-          curl -X GET "https://jitpack.io/com/github/${{ github.repository }}/${{ env.VERSION }}/build.log"
+          # Trigger JitPack build by making a request to the lookup URL
+          curl -L "https://jitpack.io/com/github/${{ github.repository }}/${{ steps.create_tag.outputs.version }}/build.log"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
