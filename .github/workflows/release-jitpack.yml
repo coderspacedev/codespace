@@ -18,7 +18,7 @@ jobs:
       - name: Read versionName from Gradle
         id: version
         run: |
-          VERSION=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle.kts)
+          VERSION=$(awk -F '"' '/version =/ {print $2}' app/build.gradle.kts)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Configure Git
