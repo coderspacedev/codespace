@@ -26,9 +26,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create and Push Tag
+      - name: Create new tag
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git tag $VERSION
-          git push https://x-access-token:$GH_TOKEN@github.com/${{ github.repository }}.git $VERSION
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git $VERSION
