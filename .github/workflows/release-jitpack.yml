@@ -26,11 +26,16 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions"
 
+      - name: Get Android Version
+        id: android_version
+        run: |
+          VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Create Release Tag
         id: create_tag
         run: |
-          # Generate version based on timestamp and commit hash
-          VERSION="v$(date +'%Y%m%d')-$(git rev-parse --short HEAD)"
+          VERSION="v${{ steps.android_version.outputs.VERSION }}"
           echo "Creating new tag: $VERSION"
           git tag $VERSION
           git push origin $VERSION
