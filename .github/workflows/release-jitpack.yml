@@ -3,7 +3,7 @@ name: CodeSpace Release
 on:
   push:
     branches:
-      - master  # Change this to your release branch if needed
+      - master  # Change to your release branch if needed
 
 jobs:
   release:
@@ -18,12 +18,27 @@ jobs:
         run: |
           VERSION=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Detected version: $VERSION"
 
-      - name: Create new tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Using Personal Access Token
+      - name: Configure Git
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create and Push New Tag
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}  # Use GH_PAT if pushing to another repo
+        run: |
+          git fetch --tags
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists. Skipping..."
+            exit 0
+          fi
+          
+          # If using GH_PAT for another repo, set remote URL
+          if [ -n "$GH_PAT" ]; then
+            git remote set-url origin https://x-access-token:$GH_PAT@github.com/${{ github.repository }}.git
+          fi
+
           git tag $VERSION
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git $VERSION
+          git push origin $VERSION
