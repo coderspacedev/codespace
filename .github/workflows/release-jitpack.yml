@@ -3,7 +3,7 @@ name: CodeSpace Release
 on:
   push:
     branches:
-      - master
+      - master  # Change this to your release branch if needed
 
 jobs:
   release:
@@ -12,23 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Ensures we have access to tags
 
       - name: Read versionName from Gradle
         id: version
         run: |
-          VERSION=$(awk -F '"' '/version =/ {print $2}' app/build.gradle.kts)
+          VERSION=$(grep -oP 'versionName\s+"\K[^"]+' app/build.gradle.kts)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create new tag
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Using Personal Access Token
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
