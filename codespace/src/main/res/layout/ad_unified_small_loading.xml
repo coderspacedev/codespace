@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/unified"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/native_128dp"
+    android:layout_height="@dimen/native_small"
     android:background="@color/colorCardBackground">
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -63,6 +63,7 @@
                     <ImageView
                         android:id="@+id/ad_app_icon"
                         android:layout_width="48dp"
+                        android:background="@drawable/ic_shimmer_background"
                         android:layout_height="48dp" />
                 </androidx.cardview.widget.CardView>
 
@@ -74,7 +75,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="3dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/ic_shimmer_background"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textSize="13sp"
@@ -127,8 +128,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="2dp"
-                android:background="@drawable/ic_bg_rounded_4sdp"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/ic_shimmer_background"
                 android:gravity="center"
                 android:lines="1"
                 android:paddingHorizontal="16dp"

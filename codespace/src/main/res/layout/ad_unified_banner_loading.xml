@@ -33,6 +33,7 @@
                 <ImageView
                     android:id="@+id/adIcon"
                     android:layout_width="48dp"
+                    android:background="@drawable/ic_shimmer_background"
                     android:layout_height="48dp" />
             </androidx.cardview.widget.CardView>
 
@@ -98,8 +99,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_4sdp"
-                android:background="@drawable/ic_bg_rounded_4sdp"
-                android:backgroundTint="@color/colorPrimary"
+                android:background="@drawable/ic_shimmer_background"
                 android:text="Install"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"

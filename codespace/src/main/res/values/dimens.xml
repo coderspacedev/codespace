@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="_0sdp">0dp</dimen>
-    <dimen name="native_248dp">248dp</dimen>
-    <dimen name="native_128dp">128dp</dimen>
-    <dimen name="native_65dp">65dp</dimen>
+    <dimen name="native_medium">255dp</dimen>
+    <dimen name="native_small">128dp</dimen>
+    <dimen name="native_banner">65dp</dimen>
 </resources>
