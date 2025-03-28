@@ -69,4 +69,6 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.gson)
     implementation(libs.shimmer)
+
+    implementation(libs.kotlin.reflect)
 }

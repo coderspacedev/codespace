@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "coder.apps.space"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "coder.apps.space"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 30
-        versionName = "2.0.12"
+        targetSdk = 35
+        versionCode = 31
+        versionName = "2.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
