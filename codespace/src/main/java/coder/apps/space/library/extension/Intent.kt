@@ -46,7 +46,7 @@ fun Activity.goResult(destination: Class<*>, extras: List<Pair<String, Any?>>? =
     }
 }
 
-inline fun <reified T> Intent.getExtra(key: String, defaultValue: T): T {
+inline fun <reified T> Intent.getExtra(key: String, defaultValue: T? = null): T? {
     return when (T::class) {
         String::class -> getStringExtra(key) as? T ?: defaultValue
         Int::class -> getIntExtra(key, defaultValue as? Int ?: 0) as T
@@ -54,7 +54,13 @@ inline fun <reified T> Intent.getExtra(key: String, defaultValue: T): T {
         Float::class -> getFloatExtra(key, defaultValue as? Float ?: 0f) as T
         Double::class -> getDoubleExtra(key, defaultValue as? Double ?: 0.0) as T
         Long::class -> getLongExtra(key, defaultValue as? Long ?: 0L) as T
-        Parcelable::class -> getParcelableExtra<Parcelable>(key) as? T ?: defaultValue
+        Bundle::class -> getBundleExtra(key) as? T ?: defaultValue
+        Parcelable::class -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getParcelableExtra(key, T::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            getParcelableExtra(key)
+        } as? T ?: defaultValue
         Serializable::class -> getSerializableExtra(key) as? T ?: defaultValue
         else -> defaultValue
     }
