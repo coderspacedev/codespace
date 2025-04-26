@@ -13,6 +13,8 @@ abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCal
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
+        appContext = applicationContext
         registerActivityLifecycleCallbacks(this)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
