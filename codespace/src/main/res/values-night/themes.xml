@@ -299,4 +299,39 @@
     <style name="Theme.Space.ActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
         <item name="android:src">@drawable/ic_menu_options</item>
     </style>
+
+    <style name="Theme.Space.BottomSheetDialogFragmentTheme" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:statusBarColor">@color/colorTransparent</item>
+        <item name="elevation">0dp</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:background">@color/colorTransparent</item>
+        <item name="backgroundTint">@color/colorTransparent</item>
+        <item name="android:windowAnimationStyle">@style/Theme.Space.BottomSheetFragmentAnimation
+        </item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Theme.Space.BottomSheetFragmentStyle</item>
+    </style>
+
+    <style name="Theme.Space.BottomSheetFragmentStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="elevation">0dp</item>
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="android:background">@color/colorTransparent</item>
+        <item name="backgroundTint">@color/colorTransparent</item>
+        <item name="shapeAppearanceOverlay">@style/Theme.Space.ShapeAppearanceOverlay.BottomSheet
+        </item>
+    </style>
+
+    <style name="Theme.Space.ShapeAppearanceOverlay.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/_12sdp</item>
+        <item name="cornerSizeTopRight">@dimen/_12sdp</item>
+    </style>
+
+    <style name="Theme.Space.BottomSheetFragmentAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
 </resources>
