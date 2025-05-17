@@ -23,7 +23,6 @@ fun Window.applyMaterialConfig(){
     }
 }
 
-
 fun Window.applyDialogConfig() {
     val params = attributes
     params?.width = WindowManager.LayoutParams.MATCH_PARENT

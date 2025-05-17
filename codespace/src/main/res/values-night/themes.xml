@@ -301,7 +301,7 @@
     </style>
 
     <style name="Theme.Space.BottomSheetDialogFragmentTheme" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsFloating">false</item>
         <item name="android:windowShowWallpaper">false</item>
         <item name="android:statusBarColor">@color/colorTransparent</item>
         <item name="elevation">0dp</item>
@@ -311,8 +311,9 @@
         <item name="android:windowAnimationStyle">@style/Theme.Space.BottomSheetFragmentAnimation
         </item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="bottomSheetStyle">@style/Theme.Space.BottomSheetFragmentStyle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="Theme.Space.BottomSheetFragmentStyle" parent="Widget.Material3.BottomSheet.Modal">

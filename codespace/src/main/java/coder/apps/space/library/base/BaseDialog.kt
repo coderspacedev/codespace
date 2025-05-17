@@ -11,11 +11,11 @@ import androidx.viewbinding.*
 import coder.apps.space.library.extension.*
 
 abstract class BaseDialog<B : ViewBinding>(
-        val bindingFactory: (LayoutInflater) -> B,
-        val isFullScreen: Boolean = false,
-        val isLight: Boolean = false,
-        private val isLightModified: Boolean = false,
-        val isPadding: Boolean = false) : DialogFragment() {
+    val bindingFactory: (LayoutInflater) -> B,
+    val isLight: Boolean = false,
+    private val isLightModified: Boolean = false,
+    val isPadding: Boolean = false
+) : DialogFragment() {
 
     var binding: B? = null
 
@@ -38,9 +38,9 @@ abstract class BaseDialog<B : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isPadding) initPadding()
-        binding?.initView()
         binding?.viewCreated()
         binding?.initListeners()
+        binding?.initView()
     }
 
     private fun initWindows() {

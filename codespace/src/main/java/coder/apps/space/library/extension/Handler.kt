@@ -8,11 +8,7 @@ fun Handler.postDelayed(delayMillis: Long, action: () -> Unit) {
 }
 
 fun Runnable(action: () -> Unit): Runnable {
-    return object : Runnable {
-        override fun run() {
-            action()
-        }
-    }
+    return java.lang.Runnable { action() }
 }
 
 fun delayed(delayMillis: Long, action: () -> Unit) {

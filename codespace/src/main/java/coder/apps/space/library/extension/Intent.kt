@@ -1,7 +1,6 @@
 package coder.apps.space.library.extension
 
 import android.app.*
-import android.content.*
 import android.os.*
 
 
@@ -31,7 +30,11 @@ fun Activity.go(destination: Class<*>, extras: List<Pair<String, Any?>>? = null,
     }
 }
 
-fun Activity.goResult(destination: Class<*>, extras: List<Pair<String, Any?>>? = null, finish: Boolean = false, finishAll: Boolean = false): Intent {
+fun Activity.goResult(
+    destination: Class<*>,
+    extras: List<Pair<String, Any?>>? = null,
+    finishAll: Boolean = false
+): Intent {
     return Intent(this, destination).apply {
         flags = if (finishAll) Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         else Intent.FLAG_ACTIVITY_CLEAR_TOP

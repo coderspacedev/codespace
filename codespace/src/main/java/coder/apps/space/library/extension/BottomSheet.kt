@@ -24,13 +24,11 @@ inline fun <T : ViewBinding> Activity.showBottomSheet(
     val binding = bindingFactory(layoutInflater)
     dialog.setContentView(binding.root)
 
-    // Common dialog window setup
     dialog.window?.apply {
         setDimAmount(dimAmount)
         setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    // Ensure the bottom sheet is fully expanded
     dialog.setOnShowListener { dialogInterface ->
         val bottomSheetDialog = dialogInterface as BottomSheetDialog
         val bottomSheet =
@@ -41,7 +39,6 @@ inline fun <T : ViewBinding> Activity.showBottomSheet(
         }
     }
 
-    // Track if an action (like "Continue") was taken to avoid triggering dismiss
     var isActionTaken = false
 
     dialog.setOnDismissListener {
@@ -50,13 +47,11 @@ inline fun <T : ViewBinding> Activity.showBottomSheet(
         }
     }
 
-    // Pass binding and dialog to the configuration lambda
     configure(binding, dialog)
 
     dialog.show()
 }
 
-// Optional: Simplified version for cases with Continue/Dismiss buttons
 inline fun <T : ViewBinding> Activity.showActionBottomSheet(
     bindingFactory: (LayoutInflater) -> T,
     styleRes: Int = R.style.Theme_Space_BottomSheetDialogTheme,

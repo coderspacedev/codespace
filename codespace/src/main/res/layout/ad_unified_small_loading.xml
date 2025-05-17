@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:background="@drawable/ad_label_background"
+                    android:background="@drawable/ic_ad_label_background"
                     android:includeFontPadding="false"
                     android:paddingStart="5dp"
                     android:paddingTop="1dp"

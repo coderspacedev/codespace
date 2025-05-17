@@ -318,17 +318,17 @@
     </style>
 
     <style name="Theme.Space.BottomSheetDialogFragmentTheme" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsFloating">false</item>
         <item name="android:windowShowWallpaper">false</item>
         <item name="android:statusBarColor">@color/colorTransparent</item>
         <item name="elevation">0dp</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:background">@color/colorTransparent</item>
         <item name="backgroundTint">@color/colorTransparent</item>
         <item name="android:windowAnimationStyle">@style/Theme.Space.BottomSheetFragmentAnimation
         </item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
         <item name="bottomSheetStyle">@style/Theme.Space.BottomSheetFragmentStyle</item>
     </style>
 

@@ -39,9 +39,9 @@ abstract class BaseBottomSheetDialog<B : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isPadding) initPadding()
-        binding?.initView()
         binding?.viewCreated()
         binding?.initListeners()
+        binding?.initView()
     }
 
     private fun initWindows() {

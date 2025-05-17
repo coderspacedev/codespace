@@ -133,38 +133,13 @@ abstract class BaseActivity<B : ViewBinding>(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
 
-    fun invertInsets(darkTheme: Boolean, window: Window) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val statusBar = APPEARANCE_LIGHT_STATUS_BARS
-            val navBar = APPEARANCE_LIGHT_NAVIGATION_BARS
-            if (!darkTheme) {
-                window.insetsController?.setSystemBarsAppearance(statusBar, statusBar)
-                window.insetsController?.setSystemBarsAppearance(navBar, navBar)
-            } else {
-                window.insetsController?.setSystemBarsAppearance(0, statusBar)
-                window.insetsController?.setSystemBarsAppearance(0, navBar)
-            }
-        } else {
-            val flags = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
-                if (Build.VERSION.SDK_INT >= 26) View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR else 0
-
-            if (!darkTheme) {
-                window.decorView.systemUiVisibility =
-                    window.decorView.systemUiVisibility or flags
-            } else {
-                window.decorView.systemUiVisibility =
-                    (window.decorView.systemUiVisibility.inv() or flags).inv()
-            }
-        }
-    }
-
     fun incrementPermissionsDeniedCount(type: String) {
-        val currentCount = tinyDB?.getInt("${type}PermissionsDeniedCount", 0) ?: 0
+        val currentCount = tinyDB?.getInt(type, 0) ?: 0
         val newCount = currentCount + 1
-        TinyDB(this@BaseActivity).putInt("${type}PermissionsDeniedCount", newCount)
+        TinyDB(this@BaseActivity).putInt(type, newCount)
     }
 
-    fun getPermissionsDeniedCount(type: String): Int {
-        return tinyDB?.getInt("${type}PermissionsDeniedCount", 0) ?: 0
+    fun fetchPermissionsDeniedCount(type: String): Int {
+        return tinyDB?.getInt(type, 0) ?: 0
     }
 }

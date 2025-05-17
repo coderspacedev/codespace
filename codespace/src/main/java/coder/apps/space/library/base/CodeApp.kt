@@ -15,8 +15,8 @@ abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCal
         super.onCreate()
         instance = this
         appContext = applicationContext
+        create()
         registerActivityLifecycleCallbacks(this)
-
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onStart(owner: LifecycleOwner) {
                 lifecycleStart()
@@ -25,6 +25,7 @@ abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCal
     }
 
 
+    abstract fun create()
     abstract fun lifecycleStart()
 
     fun isShowOpenAdsOnStart(classname: String, isShowingAd: Boolean): Boolean {
