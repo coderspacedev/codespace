@@ -24,7 +24,7 @@ object NetworkMonitor {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         executor.execute {
-            CodeApp.currentActivity?.runOnUiThread {
+            delayed(1000L) {
                 statusCallback(context.isNetworkAvailable())
             }
         }
