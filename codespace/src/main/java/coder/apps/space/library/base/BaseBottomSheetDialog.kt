@@ -5,6 +5,7 @@ import android.app.*
 import android.content.*
 import android.os.*
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.core.view.*
 import androidx.viewbinding.*
 import coder.apps.space.library.extension.*
@@ -14,7 +15,8 @@ abstract class BaseBottomSheetDialog<B : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B,
     val isLight: Boolean = false,
     private val isLightModified: Boolean = false,
-    val isPadding: Boolean = false
+    val isPadding: Boolean = false,
+    private val isRequiredInternet: Boolean? = false
 ) : BottomSheetDialogFragment() {
 
     var binding: B? = null
@@ -39,9 +41,32 @@ abstract class BaseBottomSheetDialog<B : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isPadding) initPadding()
-        binding?.viewCreated()
-        binding?.initListeners()
-        binding?.initView()
+        binding?.let {
+            it.viewCreated()
+            it.initListeners()
+            it.initView()
+        }
+        if (isRequiredInternet == true) setupNetwork()
+    }
+
+    private fun setupNetwork() {
+        activity?.apply {
+            (application as? CodeApp)?.addOnNetworkUpdateListener { hasInternet ->
+                if (hasInternet) {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                } else {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                }
+            }
+        }
     }
 
     private fun initWindows() {

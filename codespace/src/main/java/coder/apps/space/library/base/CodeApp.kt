@@ -16,7 +16,7 @@ abstract class CodeApp(
 ) : MultiDexApplication(),
     Application.ActivityLifecycleCallbacks {
 
-
+    private var onNetworkAvailableUpdate: ((Boolean) -> Unit)? = null
     private var onNetworkAvailable: ((Boolean) -> Unit)? = null
 
     override fun onCreate() {
@@ -33,12 +33,17 @@ abstract class CodeApp(
         if (isRequireInternet == true) {
             NetworkMonitor.startMonitoring(this, isNWCondition) {
                 onNetworkAvailable?.invoke(it)
+                onNetworkAvailableUpdate?.invoke(it)
             }
         }
     }
 
     abstract fun create()
     abstract fun lifecycleStart()
+
+    fun addOnNetworkUpdateListener(listener: (Boolean) -> Unit) {
+        onNetworkAvailableUpdate = listener
+    }
 
     fun addOnInternetStatusChangedListener(listener: (Boolean) -> Unit) {
         onNetworkAvailable = listener

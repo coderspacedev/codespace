@@ -14,7 +14,8 @@ abstract class BaseDialog<B : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B,
     val isLight: Boolean = false,
     private val isLightModified: Boolean = false,
-    val isPadding: Boolean = false
+    val isPadding: Boolean = false,
+    private val isRequiredInternet: Boolean? = false
 ) : DialogFragment() {
 
     var binding: B? = null
@@ -38,9 +39,32 @@ abstract class BaseDialog<B : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isPadding) initPadding()
-        binding?.viewCreated()
-        binding?.initListeners()
-        binding?.initView()
+        binding?.let {
+            it.viewCreated()
+            it.initListeners()
+            it.initView()
+        }
+        if (isRequiredInternet == true) setupNetwork()
+    }
+
+    private fun setupNetwork() {
+        activity?.apply {
+            (application as? CodeApp)?.addOnNetworkUpdateListener { hasInternet ->
+                if (hasInternet) {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                } else {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                }
+            }
+        }
     }
 
     private fun initWindows() {

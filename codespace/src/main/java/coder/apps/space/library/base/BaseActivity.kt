@@ -23,6 +23,7 @@ abstract class BaseActivity<B : ViewBinding>(
     private val isLightModified: Boolean = false,
     private val isPadding: Boolean = false,
     private val isNavPadding: Boolean = false,
+    private val isRequiredInternet: Boolean? = false
 ) : AppCompatActivity() {
 
     var tinyDB: TinyDB? = null
@@ -45,7 +46,22 @@ abstract class BaseActivity<B : ViewBinding>(
         binding?.initExtra()
         binding?.initListeners()
         binding?.initView()
+        if (isRequiredInternet == true) setupNetwork()
         initSize()
+    }
+
+    private fun setupNetwork() {
+        (application as? CodeApp)?.addOnNetworkUpdateListener { hasInternet ->
+            if (hasInternet) {
+                binding?.initExtra()
+                binding?.initListeners()
+                binding?.initView()
+            } else {
+                binding?.initExtra()
+                binding?.initListeners()
+                binding?.initView()
+            }
+        }
     }
 
     private fun initSize() {
@@ -77,17 +93,23 @@ abstract class BaseActivity<B : ViewBinding>(
     private fun initWindows() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsControllerCompat(window, window.decorView).apply {
-                isAppearanceLightStatusBars = if (isLightModified) isLight else resources.getBoolean(R.bool.isStatusBarLight)
+                isAppearanceLightStatusBars =
+                    if (isLightModified) isLight else resources.getBoolean(R.bool.isStatusBarLight)
                 isAppearanceLightNavigationBars = isLight
             }
         } else {
-            val flags = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            val flags =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             if (isLightModified) {
-                if (isLight) window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or flags
-                else window.decorView.systemUiVisibility = (window.decorView.systemUiVisibility.inv() or flags).inv()
+                if (isLight) window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility or flags
+                else window.decorView.systemUiVisibility =
+                    (window.decorView.systemUiVisibility.inv() or flags).inv()
             } else {
-                if (true) window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or flags
-                else window.decorView.systemUiVisibility = (window.decorView.systemUiVisibility.inv() or flags).inv()
+                if (true) window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility or flags
+                else window.decorView.systemUiVisibility =
+                    (window.decorView.systemUiVisibility.inv() or flags).inv()
             }
         }
     }
@@ -95,7 +117,11 @@ abstract class BaseActivity<B : ViewBinding>(
     private fun initPadding() {
         binding?.apply {
             root.setOnApplyWindowInsetsListener { v: View, insets: WindowInsets ->
-                v.setPadding(0, isPadding.takeIf { it }?.let { statusBarHeight } ?: 0, 0, isNavPadding.takeIf { it }?.let { navigationBarHeight } ?: 0)
+                v.setPadding(
+                    0,
+                    isPadding.takeIf { it }?.let { statusBarHeight } ?: 0,
+                    0,
+                    isNavPadding.takeIf { it }?.let { navigationBarHeight } ?: 0)
                 insets
             }
         }
@@ -113,16 +139,23 @@ abstract class BaseActivity<B : ViewBinding>(
 
     private fun Window.applyFullScreen() {
         if (isFullScreenIncludeNav) {
-            setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
         } else {
-            setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+            )
         }
         removeControlBar()
     }
 
     fun Window.showControlBar() {
         val windowInsetsController = WindowCompat.getInsetsController(this, decorView)
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         windowInsetsController.show(WindowInsetsCompat.Type.statusBars())
     }
 
@@ -130,7 +163,7 @@ abstract class BaseActivity<B : ViewBinding>(
         @Suppress("DEPRECATION")
         decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
     }
 
     fun incrementPermissionsDeniedCount(type: String) {

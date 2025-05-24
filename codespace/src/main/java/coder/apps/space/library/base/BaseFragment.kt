@@ -6,7 +6,10 @@ import androidx.fragment.app.*
 import androidx.viewbinding.*
 import coder.apps.space.library.helper.*
 
-abstract class BaseFragment<B : ViewBinding>(val bindingFactory: (LayoutInflater) -> B) : Fragment() {
+abstract class BaseFragment<B : ViewBinding>(
+    val bindingFactory: (LayoutInflater) -> B,
+    private val isRequiredInternet: Boolean? = false
+) : Fragment() {
 
     var tinyDB: TinyDB? = null
     var binding: B? = null
@@ -17,7 +20,11 @@ abstract class BaseFragment<B : ViewBinding>(val bindingFactory: (LayoutInflater
         create()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = bindingFactory(layoutInflater)
         return binding?.root
@@ -29,6 +36,27 @@ abstract class BaseFragment<B : ViewBinding>(val bindingFactory: (LayoutInflater
             it.viewCreated()
             it.initListeners()
             it.initView()
+        }
+        if (isRequiredInternet == true) setupNetwork()
+    }
+
+    private fun setupNetwork() {
+        activity?.apply {
+            (application as? CodeApp)?.addOnNetworkUpdateListener { hasInternet ->
+                if (hasInternet) {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                } else {
+                    binding?.let {
+                        it.viewCreated()
+                        it.initListeners()
+                        it.initView()
+                    }
+                }
+            }
         }
     }
 
