@@ -8,8 +8,13 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
+import coder.apps.space.library.helper.NetworkMonitor
 
-abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
+abstract class CodeApp(private val isRequireInternet: Boolean? = false) : MultiDexApplication(),
+    Application.ActivityLifecycleCallbacks {
+
+
+    private var onNetworkAvailable: ((Boolean) -> Unit)? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -22,11 +27,19 @@ abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCal
                 lifecycleStart()
             }
         })
+        if (isRequireInternet == true) {
+            NetworkMonitor.startMonitoring(this) {
+                onNetworkAvailable?.invoke(it)
+            }
+        }
     }
-
 
     abstract fun create()
     abstract fun lifecycleStart()
+
+    fun addOnInternetStatusChangedListener(listener: (Boolean) -> Unit) {
+        onNetworkAvailable = listener
+    }
 
     fun isShowOpenAdsOnStart(classname: String, isShowingAd: Boolean): Boolean {
         if (classname == "com.google.android.gms.ads.AdActivity" || isShowingAd) {
@@ -58,6 +71,11 @@ abstract class CodeApp : MultiDexApplication(), Application.ActivityLifecycleCal
     override fun onActivityStopped(activity: Activity) {}
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {}
+
+    override fun onTerminate() {
+        super.onTerminate()
+        NetworkMonitor.stopMonitoring()
+    }
 
     companion object {
         private var instance: CodeApp? = null

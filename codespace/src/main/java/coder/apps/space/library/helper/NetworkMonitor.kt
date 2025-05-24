@@ -11,7 +11,7 @@ object NetworkMonitor {
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
     private var connectivityManager: ConnectivityManager? = null
 
-    fun startMonitoring(context: Context, onNetworkAvailable: (Boolean) -> Unit) {
+    fun startMonitoring(context: Context, onNetworkAvailable: ((Boolean) -> Unit)? = null) {
         connectivityManager = context.connectivityManager
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -22,7 +22,7 @@ object NetworkMonitor {
                         NetworkCapabilities.NET_CAPABILITY_VALIDATED
                     )
                 if (hasInternet) {
-                    onNetworkAvailable.invoke(true)
+                    onNetworkAvailable?.invoke(true)
                 }
             }
 
@@ -34,7 +34,7 @@ object NetworkMonitor {
                     capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
                             && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
                 if (!hasInternet) {
-                    onNetworkAvailable.invoke(false)
+                    onNetworkAvailable?.invoke(false)
                 }
             }
         }
