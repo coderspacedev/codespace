@@ -10,7 +10,10 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDexApplication
 import coder.apps.space.library.helper.NetworkMonitor
 
-abstract class CodeApp(private val isRequireInternet: Boolean? = false) : MultiDexApplication(),
+abstract class CodeApp(
+    private val isRequireInternet: Boolean? = false,
+    private val isNWCondition: Boolean? = true
+) : MultiDexApplication(),
     Application.ActivityLifecycleCallbacks {
 
 
@@ -28,7 +31,7 @@ abstract class CodeApp(private val isRequireInternet: Boolean? = false) : MultiD
             }
         })
         if (isRequireInternet == true) {
-            NetworkMonitor.startMonitoring(this) {
+            NetworkMonitor.startMonitoring(this, isNWCondition) {
                 onNetworkAvailable?.invoke(it)
             }
         }
