@@ -22,6 +22,19 @@ object NetworkMonitor {
     ) {
         connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        executor.execute {
+            if (isConditionCheck == true) {
+                val hasInternet = context.isNetworkAvailable()
+                CodeApp.currentActivity?.runOnUiThread {
+                    statusCallback(hasInternet)
+                }
+            } else {
+                CodeApp.currentActivity?.runOnUiThread {
+                    statusCallback(true)
+                }
+            }
+        }
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 executor.execute {
@@ -65,7 +78,7 @@ object NetworkMonitor {
             .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
             .build()
 
-        connectivityManager?.registerNetworkCallback(networkRequest, networkCallback!!)
+        networkCallback?.let { connectivityManager?.registerNetworkCallback(networkRequest, it) }
     }
 
     fun stopMonitoring() {
