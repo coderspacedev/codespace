@@ -24,15 +24,8 @@ object NetworkMonitor {
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         executor.execute {
-            if (isConditionCheck == true) {
-                val hasInternet = context.isNetworkAvailable()
-                CodeApp.currentActivity?.runOnUiThread {
-                    statusCallback(hasInternet)
-                }
-            } else {
-                CodeApp.currentActivity?.runOnUiThread {
-                    statusCallback(true)
-                }
+            CodeApp.currentActivity?.runOnUiThread {
+                statusCallback(context.isNetworkAvailable())
             }
         }
         networkCallback = object : ConnectivityManager.NetworkCallback() {
